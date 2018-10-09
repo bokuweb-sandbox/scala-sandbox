@@ -1,0 +1,4 @@
+*.log
+.ensime_cache
+project
+target
