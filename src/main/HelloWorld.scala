@@ -12,6 +12,23 @@ case class Branch(value: Int, left: Tree, right: Tree) extends Tree
 case object Empty extends Tree
 
 object HelloWorld {
+
+  implicit class Tap[T](self: T) {
+    def tap[U](block: T => U): T = {
+      block(self) //値は捨てる
+      self
+    }
+  }
+
+  implicit val b: Int = (1 to 5).foldLeft(0)((a, b) => a + b)
+
+// Error ambiguous implicit values:
+// implicit val c: Int = (1 to 2).foldLeft(0)((a, b) => a + b)
+
+  def hoge(a: Int)(implicit b: Int): Unit = {
+    println(b + a)
+  }
+
   def main(args: Array[String]): Unit = {
     val arr = Array(1, 2, 3, 4, 5)
     User.swapArray(arr)(1, 2)
@@ -33,6 +50,22 @@ object HelloWorld {
                Branch(20, Empty, Empty),
                Branch(30, Branch(40, Empty, Empty), Empty))))
     println(Tree.sort(tree))
+
+    "Hello, World"
+      .tap { s =>
+        println(s)
+      }
+      .reverse
+      .tap { s =>
+        println(s)
+      }
+
+    11111
+      .tap { s =>
+        println(s)
+      }
+
+    hoge(10)
   }
   def joinByComma(start: Int, end: Int): String = {
     (start to end).mkString(",")
